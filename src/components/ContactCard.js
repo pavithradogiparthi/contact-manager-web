@@ -34,7 +34,13 @@ const ContactCard = (props)=>{
                 </Link>
                 <div style={{color: "#777"}}>{email}</div>
             </div>
-            <div className="item" ><i className="trash alternate outline icon" onClick={returnId}/></div>
+            
+            <div className="item" style={{display:"inline-flex",justifyContent:"center",alignContent:"center",cursor:"pointer",color:"red"}}>
+                <Link to={{pathname:`/editcontact`}} state={{contact:props.contact}}>
+                    <i className="edit alternate outline icon" />
+                    </Link>
+                <i className="trash alternate outline icon" onClick={returnId}/>
+            </div>
     </div>
     );
 };
