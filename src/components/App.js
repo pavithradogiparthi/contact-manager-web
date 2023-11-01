@@ -8,6 +8,7 @@ import ContactList from './ContactList';
 import AddContact from './AddContact';
 import ContactDetails from './ContactDetails';
 import DeleteContact from './DeleteContact';
+import EditContact from './EditContact';
 
 function App() {
 
@@ -23,6 +24,22 @@ function App() {
 
   const [contacts, setContacts] = useState([]);
   const [delcontactinfo, setInfo] = useState({name:"",id:""});
+  const [search, setSearch] = useState(""); 
+  const [searchResult, setSearchResult] = useState("");
+
+  const searchHandler = (search)=>{
+    setSearch(search);
+    if(search!==""){
+        const newContactList = contacts.filter((contact)=>{
+          return Object.values(contact).join(" ").toLowerCase().includes(search.toLowerCase());
+        })
+        setSearchResult(newContactList);
+    }
+    else{
+      setSearchResult(contacts);
+    }
+
+  }
 
   const addContactHandler = async (contact)=>{
     const request = {
@@ -31,6 +48,14 @@ function App() {
     }
     const response = await api.post("/contacts",request);
     setContacts([...contacts,response.data]);
+  }
+
+  const editContactHandler = async (contact)=>{
+    const response = await api.put(`/contacts/${contact.id}`,contact);
+    const {id} = contact
+    setContacts(contacts.map((contact)=>{
+      return contact.id === id? response.data:contact;
+    }))
   }
 
   const setDelContact = (id,name)=> setInfo({name:`${name}`,id:`${id}`});
@@ -64,8 +89,9 @@ function App() {
         <Header/>
         <Routes>
             <Route path='/add' exact element={ <AddContact navigation={navigation} addContactHandler={addContactHandler}/>}/>
-            <Route path='/' exact element={<ContactList contacts={contacts} getDelContactId = {setDelContact}/>}/>
+            <Route path='/' exact element={<ContactList contacts={search!==""?searchResult:contacts} getDelContactId = {setDelContact} term={search} searchKeyword={searchHandler}/>}/>
             <Route path='/contact/:id' exact element={<ContactDetails location={location}/>}/>
+            <Route path='/editcontact' exact element={<EditContact location = {location} navigation={navigation} editContactHandler={editContactHandler}/>}/>
         </Routes>
         {delcontactinfo.id!==""&&<DeleteContact name={delcontactinfo.name} getConfirmation={removeContactHandler}/>}
     </div>
