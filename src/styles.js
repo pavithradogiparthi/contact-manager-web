@@ -14,6 +14,12 @@ const header = {
     alignItems: "center",
     padding: "20px"
 }
+const searchheader = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "20px"
+}
 const addButtonstyle = {
     backgroundColor: "green",
     color: "#fff",
@@ -45,11 +51,11 @@ const overlay = {
 
 const dialogBox = {
     backgroundColor: "#fff",
-    maxWidth:"400px",
+    maxWidth:"300px",
     padding: "20px",
     borderRadius: "5px",
     boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
     textAlign: "center",
 }
 
-export {header,listheader,addButtonstyle,liststyle,overlay,dialogBox};
+export {header,listheader,searchheader,addButtonstyle,liststyle,overlay,dialogBox};
